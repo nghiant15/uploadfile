@@ -4,7 +4,7 @@ const multer = require('multer');
 const app = express();
 const fs = require('fs');
  var   path = require('path');
-
+const cors = require('cors');
 //CREATE EXPRESS APP
 app.use(bodyParser.urlencoded({extended: true}))
  
@@ -12,7 +12,18 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.get('/', function(req, res) {
     res.json({ message: 'WELCOME' });   
 });
+
+
+
+
+const corsOptions ={
+   origin:'*', 
+   credentials:true,            //access-control-allow-credentials:true
+   optionSuccessStatus:200,
+}
+
  
+app.use(cors(corsOptions)) 
 app.listen(3004, () => console.log('Server started on port 3004 '));
 
 
@@ -34,7 +45,7 @@ app.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
     error.httpStatusCode = 400
     return next(error)
   }
-  res.send(file)
+  return res.send(file)
 })
 
 app.get('/book/:id',function(req,res){
